@@ -1,3 +1,6 @@
+[submodule "lib/pkp"]
+	path = lib/pkp
+	url = https://github.com/leonardorodriguesds/pkp-lib
 [submodule "plugins/generic/usageStats"]
         path = plugins/generic/usageStats
         url = https://github.com/pkp/usageStats.git
@@ -47,6 +50,3 @@
 [submodule "plugins/generic/googleScholar"]
 	path = plugins/generic/googleScholar
 	url = https://github.com/pkp/googleScholar
-[submodule "lib/pkp"]
-	path = lib/pkp
-	url = https://github.com/leonardorodriguesds/pkp-lib
