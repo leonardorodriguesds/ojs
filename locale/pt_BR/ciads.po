@@ -1,0 +1,2 @@
+msgid "submissions.filter.state"
+msgstr "Por estado (UF)"

@@ -114,6 +114,8 @@ class SubmissionService extends PKPSubmissionService {
 		if (!empty($requestArgs['issueIds'])) {
 			$submissionQB->filterByIssues($requestArgs['issueIds']);
 		}
+
+		$submissionQB->filterByStates(isset($requestArgs['states'])? $requestArgs['states'] : null, isset($requestArgs['stateWhereClause']) ? $requestArgs['stateWhereClause'] : null);
 	}
 
 	/**

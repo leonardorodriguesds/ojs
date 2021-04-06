@@ -11,6 +11,17 @@
 	$(function() {ldelim}
 		// Attach the form handler.
 		$('#contactForm').pkpHandler('$.pkp.controllers.form.AjaxFormHandler');
+
+		$('select#country').on('change', function() {ldelim}
+			if (this.value != 'BR') {ldelim}
+				$("select#state").val("");
+				$("select#state").prop('required',true);
+				$("select#state").prop('disabled',true);
+			{rdelim} else {ldelim}
+				$("select#state").prop('required',false);
+				$("select#state").prop('disabled',false);
+			{rdelim}
+		{rdelim});
 	{rdelim});
 </script>
 
@@ -32,7 +43,7 @@
 	{fbvFormSection}
 		{fbvElement type="textarea" label="common.mailingAddress" name="mailingAddress" id="mailingAddress" rich=true value=$mailingAddress size=$fbvStyles.size.MEDIUM}
 		{fbvElement type="select" label="common.country" name="country" id="country" required=true defaultLabel="" defaultValue="" from=$countries selected=$country translate=false size=$fbvStyles.size.MEDIUM}
-		{fbvElement type="text" label="common.state" name="state" id="state" required=true defaultLabel="" defaultValue="" value=$state translate=false size=$fbvStyles.size.MEDIUM}
+		{fbvElement type="select" label="common.state" name="state" id="state" defaultLabel="" defaultValue="" from=$states selected=$state translate=false size=$fbvStyles.size.MEDIUM}
 	{/fbvFormSection}
 
 	{if count($availableLocales) > 1}

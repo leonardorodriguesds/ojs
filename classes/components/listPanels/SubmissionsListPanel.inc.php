@@ -56,6 +56,13 @@ class SubmissionsListPanel extends PKPSubmissionsListPanel {
 				]
 			];
 		}
+
+		$states_filter = array([
+			'heading' => __('submissions.filter.state'),
+			'filters' => $this->getStateFilters(),
+		]);
+
+		array_splice($config['filters'], 2, 0, $states_filter);
 		return $config;
 	}
 
@@ -137,5 +144,22 @@ class SubmissionsListPanel extends PKPSubmissionsListPanel {
 				];
 			}, $sections),
 		];
+	}
+
+	public function getStateFilters() {
+		$earth = new \MenaraSolutions\Geographer\Earth();
+		$states = $earth->findOneByCode('BR')->getStates()->sortBy('name')->pluck('name');
+		$states[27] = 'Outro';
+		$states_filter = array();
+
+		foreach($states as $id => $state) {
+			array_push($states_filter, array(
+				'param' => 'states',
+				'value' => $id,
+				'title' => $state,
+			));
+		}
+		
+		return $states_filter;
 	}
 }

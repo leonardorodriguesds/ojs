@@ -25,6 +25,10 @@ class SubmissionQueryBuilder extends \PKP\Services\QueryBuilders\PKPSubmissionQu
 	/** @var int|array Section ID(s) */
 	protected $sectionIds = null;
 
+	protected $filterByUserState = false;
+	protected $stateWhereDecl = null;
+	protected $stateWhere = null;
+
 	/**
 	 * Set issue filter
 	 *
@@ -77,6 +81,38 @@ class SubmissionQueryBuilder extends \PKP\Services\QueryBuilders\PKPSubmissionQu
 				->whereIn('section_p.section_id', $sectionIds);
 		}
 
+		$leftJoinAuthor = False;
+
+		if ($this->filterByUserState) {
+			if (!$leftJoinAuthor) $q->leftJoin('publications as p', 'p.submission_id', '=', 's.submission_id')
+			->leftJoin('authors as au','p.publication_id','=','au.publication_id');
+
+			$q->leftJoin('users as us','us.user_id','=','au.author_id')
+				->leftJoin('user_settings as uss','uss.user_id','=','us.user_id')
+				->where('uss.setting_name', '=', 'state');
+
+				if ($this->stateWhereDecl == 'NOTIN') $q->whereNotIn('uss.setting_value', $this->stateWhere);
+				else $q->whereIn('uss.setting_value', $this->stateWhere);
+		}
+
 		return $q;
+	}
+
+	/**
+	 * Set state filter
+	 *
+	 * @param int|array|null $states
+	 *
+	 * @return \OMP\Services\QueryBuilders\SubmissionListQueryBuilder
+	 */
+	public function filterByStates($states, $clause = 'IN') {
+		$this->filterByUserState = !is_null($states);
+		if (!is_null($states) && !is_array($states)) {
+			$states = array($states);
+		}
+		// error_log('TESTEEEEEE');
+		$this->stateWhereDecl = (!is_null($clause) ? $clause : 'IN');
+		$this->stateWhere = $states;
+		return $this;
 	}
 }
